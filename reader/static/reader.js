@@ -7,15 +7,15 @@ var offcanvasBottom = new bootstrap.Offcanvas($('.offcanvas-bottom-all'))
 var offcanvasSetting = new bootstrap.Offcanvas($('.offcanvas-bottom-setting'))
 
 var page_width = $('article').width() + parseInt($('article').css('column-gap'))
-var page_num = parseInt(($('#marker').offset().left - $('article').offset().left)/ page_width +2)
+var page_num = parseInt(($('#marker').offset().left - $('article').offset().left)/ page_width +1)
 var page_contents_len = new Array(page_num + 1 ).fill(0);
 var modal = new bootstrap.Modal($(".myModal")) // Returns a Bootstrap modal instance\
 
-if (isIOS)
-{
-    page_num -=1
-    $('article').css('height','95vh')
-}
+// if (isIOS)
+// {
+//     page_num -=1
+//     $('article').css('height','95vh')
+// }
     
 
 if (isMobile)
@@ -126,6 +126,8 @@ if (isMobile)
     
     })
 
+
+
 }
 else
 {
@@ -181,45 +183,55 @@ $('.page-item').click(function(e){
     var cur = $('.page-item.active')
     var cur_idx = parseInt(cur.text()) -1
     var all = $('.page-num').length
-    if ($(this).hasClass('prev-page'))
-    {
-        if(cur_idx>0)
-        {
-            
-            cur.prev().addClass('active')
-            cur.removeClass('active')
-            $('article').css('transform',`translateX(-${page_width * (cur_idx - 1 )}px)`)
-            save_record()
-            
-        }
-        else{
-            console.log(cur_idx)
-            $('.page-link.prev-chapter')[0].click()
-            localStorage.setItem('prev-chapter','true')
-        }
-    }
-    else if ($(this).hasClass('next-page'))
-    {
-        if(cur_idx<all-1)
-        {
-            
-            cur.next().addClass('active')
-            cur.removeClass('active')
-            $('article').css('transform',`translateX(-${page_width * (cur_idx +1 )}px)`)
-            save_record()
-        }
-        else
-        {
-            $('.page-link.next-chapter')[0].click()
-        }
-    }
-    else if ($(this).hasClass('page-num'))
+    if ($(this).hasClass('page-num'))
     {
         cur.removeClass('active')
         $(this).addClass('active')
         cur_idx = parseInt($(this).text()) -1 
         $('article').css('transform',`translateX(-${page_width * cur_idx}px)`)
         save_record()
+    }
+})
+
+$('.prev-page').click(function(e){
+    var cur = $('.page-item.active')
+    var cur_idx = parseInt(cur.text()) -1
+    var all = $('.page-num').length
+    if(cur_idx>0)
+    { 
+        cur.prev().addClass('active')
+        cur.removeClass('active')
+        $('article').css('transform',`translateX(-${page_width * (cur_idx - 1 )}px)`)
+        save_record()
+
+        
+        
+    }
+    else{
+        console.log(cur_idx)
+        $('.page-link.prev-chapter')[0].click()
+        localStorage.setItem('prev-chapter','true')
+    }
+})
+
+$('.next-page').click(function(e){
+    var cur = $('.page-item.active')
+    var cur_idx = parseInt(cur.text()) -1
+    var all = $('.page-num').length
+    if(cur_idx<all-1)
+    {
+        
+        cur.next().addClass('active')
+        cur.removeClass('active')
+        $('article').css('transform',`translateX(-${page_width * (cur_idx +1 )}px)`)
+        save_record()
+
+        var cur_idx = parseInt() 
+        $('.chpt-page').text($('.page-item.active').text()+'/'+page_num)
+    }
+    else
+    {
+        $('.page-link.next-chapter')[0].click()
     }
 })
 
@@ -426,3 +438,6 @@ $('.chapter-list-show').click(function(){
     }, 250);
     
 })
+
+var cur_idx = parseInt() 
+$('.chpt-page').text($('.page-item.active').text()+'/'+page_num)

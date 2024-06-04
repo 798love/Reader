@@ -13,7 +13,7 @@ class BookListView(generic.ListView):
     def get_queryset(self):
         """Return the last five published questions."""
         if self.request.user.is_authenticated:
-            return Book.objects.filter(share = False) | Book.objects.filter(uploader = self.request.user.id)
+            return Book.objects.filter(share = True) or Book.objects.filter(uploader = self.request.user.id)
         else:
             return Book.objects.filter(share = True)
         

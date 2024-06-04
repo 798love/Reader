@@ -28,7 +28,7 @@ article{
 
 </style>
 
-<main class="vh-100">
+<main >
     
     
     <div class="d-none d-lg-block">
@@ -38,14 +38,21 @@ article{
     <div class="center_menu zindex-tooltip position-fixed top-50 start-50 translate-middle" style="width: 30%;height:30%"></div>
 
     <div class="container">
+        <div class="top-bar">
+            <h3 class="chpt-title">{{chapter_title}} </h3> 
+
+            <h3 class="chpt-page mobile-only">
+                1/1
+            </h3>
+        </div>
         <div class="article-container">
+            
+            
             <article class="py-2">
-                <h3 class="text-center">{{chapter_title}} </h3> 
                     {% for line in content_lines %}
                         <p >{{line}}</p>
                     {% endfor %}
                 <span id="marker"></span>
-    
             </article>
         </div>
 

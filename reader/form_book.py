@@ -9,7 +9,7 @@ import os
 
 def handle_local_book(request,url):
     if str(url)[-4:]!='.txt':
-        return
+        return 'not a txt file'
     file_name = os.path.basename(url).replace('.txt','')
     book = Book(book_url = url)
     book.name = file_name
