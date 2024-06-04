@@ -7,7 +7,7 @@
 <style>
 
 {% if user_setting %}
-main{
+body{
     background:{{user_setting.read_bg}};
 }
 
@@ -15,7 +15,7 @@ article{
     font-size:{{user_setting.font_size}}px;
 }
     {% if 'rgb(0, 0, 0)' in user_setting.read_bg %}
-    main{
+    body{
         color:rgb(90, 90, 90);
     }
     {% endif %}

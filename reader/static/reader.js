@@ -203,12 +203,10 @@ $('.prev-page').click(function(e){
         cur.removeClass('active')
         $('article').css('transform',`translateX(-${page_width * (cur_idx - 1 )}px)`)
         save_record()
-
-        
-        
+ 
     }
     else{
-        console.log(cur_idx)
+        // console.log(cur_idx)
         $('.page-link.prev-chapter')[0].click()
         localStorage.setItem('prev-chapter','true')
     }
@@ -253,16 +251,7 @@ function save_record()
 }
 
 
-if(localStorage.getItem('prev-chapter'))
-{
-    $('.pages-container').children().last().click()
-    localStorage.removeItem('prev-chapter')
-    save_record()
-}
-else
-{
-    save_record()
-}
+
 
 for(var i=0;i<page_num+1;i++)
 {
@@ -337,19 +326,26 @@ $('.dec-font').click(function(){
 
 
 $('.bg-setting').click(function(){
-    $('main').css('background',$(this).css('background'))
+    $('body').css('background-color',$(this).css('background-color'))
+
+    $('.all-bg')[0].content = $(this).css('background-color')
+
     $('.bg-setting').removeClass('bodder border-4 border-secondary')
     $(this).addClass('bodder border-4 border-secondary')
+    console.log($(this).css('background-color'))
+    
 })
 
 $('.update-setting').click(function(){
-    var bg = $('main').css('background')
+    
+
+    var bg = $('body').css('background-color')
     if($(this).hasClass('bg-setting'))
-        bg = $(this).css('background')
+        bg = $(this).css('background-color')
 
     if ($(this).hasClass('read-black'))
-        $('main').css('color','rgb(90,90,90)')
-
+        $('body').css('color','rgb(90,90,90)')
+    $('.all-bg')[0].content = bg 
     $.ajax({
      url: url_update_setting, 
      type: 'post',
@@ -441,3 +437,14 @@ $('.chapter-list-show').click(function(){
 
 var cur_idx = parseInt() 
 $('.chpt-page').text($('.page-item.active').text()+'/'+page_num)
+
+if(localStorage.getItem('prev-chapter'))
+{
+    $('.pages-container').children().last().click()
+    localStorage.removeItem('prev-chapter')
+    save_record()
+}
+else
+{
+    save_record()
+}

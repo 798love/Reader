@@ -6,8 +6,14 @@
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <meta name="apple-mobile-web-app-capable" content="yes" /> 
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> -->
     <link rel="manifest" href="{% static 'manifest.json' %}">
+    {% if user_setting %}
+        <meta name="theme-color"  class="all-bg" content="{{user_setting.read_bg}}" />
+    {%else %}
+        <meta name="theme-color"  class="all-bg" content="#fff" />
+    {% endif %}
     
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
     <link rel="stylesheet" type="text/css" href="{%  static 'bootstrap-5.2.0-beta1-dist/css/bootstrap.min.css' %}">
@@ -32,3 +38,4 @@
 </body>
 
 </html>
+

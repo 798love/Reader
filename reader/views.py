@@ -15,6 +15,7 @@ class BookListView(generic.ListView):
         if self.request.user.is_authenticated:
             return Book.objects.filter(share = True) or Book.objects.filter(uploader = self.request.user.id)
         else:
+            print(Book.objects.filter(share = True))
             return Book.objects.filter(share = True)
         
 
@@ -110,26 +111,30 @@ def book(request,pk):
 
 
 @login_required(login_url='reader:index')
-def book_reader_offset(request,book_pk,chapter_pk,offset):
-    _book = get_object_or_404(Book,id = book_pk)
-    if _book.uploader == 0 or _book.uploader == request.user.id:
-        chapter_list = Chapter.objects.filter(book_id = book_pk)
-        chapter_list = Chapter.objects.filter(book_id = book_pk)
-        chapter = get_object_or_404(Chapter,pk = chapter_pk)
-        content = 'NULL'
-        with open(_book.book_url,'r',encoding=_book.charset) as f:
-            content = f.read()[chapter.start :chapter.end]
-        content_lines = content.split('\n')
-        if len(content_lines) == 1:
-            content_lines = content_lines[0].split(' ',1)
+def book_reader_offset(request,book_pk,chapter_pk,offset=0):
+    _book = get_object_or_404(Book,id = int(book_pk))
+    if _book.share!=True and _book.uploader != request.user.id:
+        return redirect('reader:index')
+
+    chapter_list = Chapter.objects.filter(book_id = book_pk)
+    chapter = get_object_or_404(Chapter,pk = chapter_pk)
+
+    content = 'NULL'
+    with open(_book.book_url,'r',encoding=_book.charset) as f:
+        content = f.read()[chapter.start :chapter.end]
+        
+    if content[:len(chapter.title)] == chapter.title:
+        content = content[len(chapter.title):]
+    content = content.strip().split('\n')
+
+    if request.user.is_authenticated :
+        print(offset)
         user_setting = get_object_or_404(UserSetting,user_id = request.user.id)
+        return render(request, 'book_reader.html', {'chapter_title':chapter.title,'chapter_list':chapter_list,'content_lines':content,'last_words':offset,
+            'user_setting':user_setting,'progess':progress(book_pk,chapter_pk)})
+    else:
+        return render(request, 'book_reader.html', {'chapter_title':chapter.title,'chapter_list':chapter_list,'content_lines':content,'progess':progress(book_pk,chapter_pk)})
 
-
-        return render(request, 'book_reader.html', 
-                    {'chapter_list': chapter_list,'chapter_title':content_lines[0],'content_lines':content_lines[1:],
-                'last_words':offset,'user_setting':user_setting})
-
-    return redirect('reader:index')
 
 
 def progress(book_id,chapter_id):
@@ -161,39 +166,14 @@ def book_reader(request,book_pk,chapter_pk):
             return HttpResponse('success')  
         if 'kwd' in request.POST:
             return keyword_search(request,book_pk,chapter_pk,str(request.POST['kwd']))
-    _book = get_object_or_404(Book,id = int(book_pk))
-    if _book.share!=True and _book.uploader != request.user.id:
-        return redirect('reader:index')
-
-    chapter_list = Chapter.objects.filter(book_id = book_pk)
-    chapter = get_object_or_404(Chapter,pk = chapter_pk)
-
-    content = 'NULL'
-    with open(_book.book_url,'r',encoding=_book.charset) as f:
-        content = f.read()[chapter.start :chapter.end]
-        
-    if content[:len(chapter.title)] == chapter.title:
-        content = content[len(chapter.title):]
-    content = content.strip().split('\n')
-    # return render(request, 'book_reader.html', {'chapter_title':chapter.title,'chapter_list':chapter_list,'content_lines':content,'progess':20})
-
-    # print(request.META['HTTP_REFERER'])
-    # if request.user.is_authenticated and 'HTTP_REFERER' in request.META and ('book_list' in request.META['HTTP_REFERER'] or 'bookmark_href' in request.META['HTTP_REFERER'])  :
-    #     print(request.META['HTTP_REFERER'])
-    #     last = UserBookRecord.objects.filter(user_id = request.user.id , book_id = book_pk).order_by('-read_time')
-    #     user_setting = get_object_or_404(UserSetting,user_id = request.user.id)
-    #     if len(last) > 0:
-    #         last = last[0]
-    #         return render(request, 'book_reader.html', 
-    #             {'chapter_title':chapter.title,'chapter_list':chapter_list, 'content_lines':content,
-    #             'last_words':last.words_read,'user_setting':user_setting,'progess':progress(book_pk,chapter_pk)})
-
     if request.user.is_authenticated :
-        user_setting = get_object_or_404(UserSetting,user_id = request.user.id)
-        return render(request, 'book_reader.html', {'chapter_title':chapter.title,'chapter_list':chapter_list,'content_lines':content,
-            'user_setting':user_setting,'progess':progress(book_pk,chapter_pk)})
-    else:
-        return render(request, 'book_reader.html', {'chapter_title':chapter.title,'chapter_list':chapter_list,'content_lines':content,'progess':progress(book_pk,chapter_pk)})
+        UserBookRecord.objects.filter(user_id =request.user.id, book_id =book_pk)
+        last = UserBookRecord.objects.filter(user_id = request.user.id , book_id = book_pk).order_by('-read_time')
+        if len(last) > 0 and last[0].chapter_id == chapter_pk:
+            return book_reader_offset(request,book_pk,chapter_pk,last[0].words_read)
+            
+    return book_reader_offset(request,book_pk,chapter_pk)
+    
 
 def login_auth(request):
     if request.method == 'POST':
@@ -237,20 +217,42 @@ class search_item:
         self.offset = off
 
 def keyword_search(request,book_pk,chapter_pk,kwd):
-    chapter_list = Chapter.objects.filter(book_id = book_pk)
+    _book = get_object_or_404(Book,id = int(book_pk))
+    if _book.share!=True and _book.uploader != request.user.id:
+        return redirect('reader:index')
+    
+    if len(kwd)==0:
+        return render(request, 'search.html', {'list': []})
+    
+    chapter_list = Chapter.objects.filter(book_id = book_pk).order_by('index')
     search_list = []
-    for chapter in chapter_list:
-        con = get_object_or_404(Content,pk = chapter.content_id)
-        content_lines = con.content.split('\n')
-        cnt = 0
-        content_cnt = [0,]
-        for i in content_lines:
-            cnt += len(i)
-            content_cnt.append(cnt)
+    
+    content = 'NULL'
+    with open(_book.book_url,'r',encoding=_book.charset) as f:
+        content = f.read()
+    chpt_idx = 0
+    idx=content.find(kwd)
+    while idx!=-1:
 
-        for i in range(len(content_lines)):
-            if content_lines[i].find(kwd) != -1:
-                search_list.append(search_item(book_pk,chapter.id,content_lines[i],content_cnt[i]))
+        res_len = 100
+        res_cont = content[idx-100:idx+100]
+        res_cont_lns = res_cont.split('\n')
+        target_ln_cnt = 0
+
+        for cont_ln in res_cont_lns:
+            target_ln_cnt+=len(cont_ln)+1
+            if target_ln_cnt>res_len:
+                res_cont = cont_ln
+                break
+
+        for _idx in range(chpt_idx,len(chapter_list)):
+            if idx >= chapter_list[_idx].start and idx <= chapter_list[_idx].end:
+                chpt_idx = _idx
+
+        search_list.append(search_item(book_pk,chapter_list[chpt_idx].id,res_cont,idx-chapter_list[chpt_idx].start))
+        idx = content.find(kwd,idx+1)
+        # break
+
     return render(request, 'search.html', {'list': search_list})
 
 @login_required(login_url='reader:index')

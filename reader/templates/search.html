@@ -1,7 +1,7 @@
 
 <div class="list-group list-group-flush">
     {% for item in list %}
-    <a class="list-group-item {% if request.resolver_match.kwargs.chapter_pk == item.chapter_pk %} active {% endif %}" href="{% url 'reader:book_reader' item.book_pk item.chapter_pk  %}" method="post">
+    <a class="list-group-item {% if request.resolver_match.kwargs.chapter_pk == item.chapter_pk %} active {% endif %}" href="{% url 'reader:book_reader_offset' item.book_pk item.chapter_pk item.offset  %}" method="get">
         {{ item.content }}
     </a>
     {% endfor %}

@@ -13,9 +13,15 @@
 	overflow-x: hidden;
 }
 
-
+.offcanvas-bottom {
+	padding-bottom: 20px;
+}
 
 @media  screen and  (max-width: 991px) {
+	body{
+		padding-top: env(safe-area-inset-top); /* Ensure content is not under the status bar */
+	}
+	
 	.container{
 		height: 100vh;
 	}
@@ -53,7 +59,7 @@
 	article{
 		columns: calc(100vw - 32px) 1;
 		column-gap: 16px;
-		height: 96vh;
+		height: 94vh;
 		transition: 0s;
 	}
 	
@@ -73,13 +79,16 @@
 .chpt-title{
 	position: fixed;
 	top: 30px;
-	width: 100vh;
-	padding-left: 30vh;
-	padding-right: 30vh;
+	left: 0;
+	width: 100%;
+	padding-left: 30%;
+	padding-right: 30%;
 	height: 30px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	text-align: center;
+	z-index: -1;
 
 }
 article{
@@ -91,6 +100,15 @@ article{
 .desktop-only-fixed{
 	position: fixed;
 }
+/* .container{
+	padding-bottom: 100px;
+} */
+/* main{
+	height: 100vh;
+}
+.body{
+	margin: 0;
+} */
 
 }
 
