@@ -275,9 +275,10 @@ def bookmark_save(request):
     if not request.user.is_authenticated:
         return HttpResponse('not login')  
     
+    word_record_len = 200
     if request.method == 'POST':
         user_bookmark = UserBookMark(user_id = request.user.id,book_id = request.POST['book_id'],chapter_id = request.POST['chapter_id'],
-            words_read = request.POST['words_read'],content =request.POST['content'] )
+            words_read = request.POST['words_read'],content =request.POST['content'][:word_record_len] )
         user_bookmark.save()
         return HttpResponse('ok')  
 
