@@ -224,31 +224,58 @@ article{
 .book-name {
 	background: #666;
 	color: #FFF;
-	height: 35%;
+	height: 70%;
 	width: 100%;
 	position: absolute;
-	font-size: 20px;
+	padding: 8px;
+	display: flex;
+	align-items: center;
+	
+}
+.book-name-text{
 
+	font-size: 20px;
+	margin: auto;
 	overflow:hidden;
 	text-overflow: ellipsis;
-	-webkit-line-clamp: none;
+	-webkit-line-clamp: 5;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
 
-	text-align: center;
-	padding: 3px;
 }
 
-.book-description {
-	top: 35%;
-	height: 65%;
+.book-content{
+	top: 70%;
+	height: 30%;
 	width: 100%;
 	position: absolute;
-	background: #eee;
-	line-height: 76px;
-	text-indent: 3em;
-	font-size: 12px;
+	background: #cccccc;
+	padding: 4px;
 }
+
+.book-author {
+	top: 0%;
+	height: 33%;
+	width: 100%;
+	position: absolute;
+}
+
+.book-curr-chpt {
+	top: 33%;
+	height: 33%;
+	width: 100%;
+	position: absolute;
+
+}
+
+.book-last-chpt {
+	top: 66%;
+	height: 33%;
+	width: 100%;
+	position: absolute;
+
+}
+
 
 
 .grid-item {

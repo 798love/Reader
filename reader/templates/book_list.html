@@ -14,74 +14,27 @@
   <div class="container">
     <div class="row">
         
-        
-      <div class="col-4 col-md-3 col-lg-2 mb-4">
-        <div class="grid-item">
-            <div class="grid-item-content bg-secondary">
-              <div class='book-name my-auto'>聊聊我的大学室的大学室友聊聊我的学室友我的大学室友聊聊我的大学室友聊聊我的大学室友聊聊我的大学室友聊聊我的大学室友</div>
-              <div class='book-description'>那些回忆，那些事。。。</div>
-                <!-- Your content here -->
+      {% for book in book_list %}
+        <a href="{% url 'reader:book' book.id %}" style="text-decoration: none;color:#333;">
+          <div class="col-4 col-md-3 col-lg-2 mb-4">
+            <div class="grid-item">
+                <div class="grid-item-content bg-secondary">
+                  <div class='book-name'>
+                    <div class="book-name-text">
+                      {{ book.name }}
+                    </div>
+                  </div>
+                  <div class="book-content">
+                    <div class='book-author'>作者：佚名</div>
+                    <div class='book-curr-chpt'>当前阅读：第一章</div>
+                    <div class='book-last-chpt'>最新章节：第八章</div>
+                  </div>
+                    <!-- Your content here -->
+                </div>
             </div>
-        </div>
-      </div>
-      <div class="col-4 col-md-3 col-lg-2 mb-4">
-        <div class="grid-item">
-            <div class="grid-item-content bg-secondary">
-                <!-- Your content here -->
-            </div>
-        </div>
-      </div>
-      <div class="col-4 col-md-3 col-lg-2 mb-4">
-        <div class="grid-item">
-            <div class="grid-item-content bg-secondary">
-                <!-- Your content here -->
-            </div>
-        </div>
-      </div>
-      <div class="col-4 col-md-3 col-lg-2 mb-4">
-        <div class="grid-item">
-            <div class="grid-item-content bg-secondary">
-                <!-- Your content here -->
-            </div>
-        </div>
-      </div>
-      <div class="col-4 col-md-3 col-lg-2 mb-4">
-        <div class="grid-item">
-            <div class="grid-item-content bg-secondary">
-                <!-- Your content here -->
-            </div>
-        </div>
-      </div>
-      <div class="col-4 col-md-3 col-lg-2 mb-4">
-        <div class="grid-item">
-            <div class="grid-item-content bg-secondary">
-                <!-- Your content here -->
-            </div>
-        </div>
-      </div>
-      <div class="col-4 col-md-3 col-lg-2 mb-4">
-        <div class="grid-item">
-            <div class="grid-item-content bg-secondary">
-                <!-- Your content here -->
-            </div>
-        </div>
-      </div>
-      <div class="col-4 col-md-3 col-lg-2 mb-4">
-        <div class="grid-item">
-            <div class="grid-item-content bg-secondary">
-                <!-- Your content here -->
-            </div>
-        </div>
-      </div>
-      <div class="col-4 col-md-3 col-lg-2 mb-4">
-        <div class="grid-item">
-            <div class="grid-item-content bg-secondary">
-                <!-- Your content here -->
-            </div>
-        </div>
-      </div>
-
-
+          </div>
+        </a>
+      {% endfor %}
 
 
     </div>
