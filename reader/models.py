@@ -48,6 +48,7 @@ class UserBookRecord(models.Model):
     user_id = models.IntegerField()
     book_id = models.IntegerField()
     chapter_id = models.IntegerField()
+    chapter_title = models.CharField(max_length=64,default='')
     read_time = models.DateTimeField(default = timezone.now)
     words_read = models.IntegerField()
 

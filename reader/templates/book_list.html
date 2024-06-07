@@ -13,10 +13,11 @@
 
   <div class="container">
     <div class="row">
-        
+      {% load static %}
       {% for book in book_list %}
-        <a href="{% url 'reader:book' book.id %}" style="text-decoration: none;color:#333;">
+        
           <div class="col-4 col-md-3 col-lg-2 mb-4">
+            <a href="{% url 'reader:book' book.id %}" style="text-decoration: none;color:#333;">
             <div class="grid-item">
                 <div class="grid-item-content bg-secondary">
                   <div class='book-name'>
@@ -25,15 +26,16 @@
                     </div>
                   </div>
                   <div class="book-content">
-                    <div class='book-author'>作者：佚名</div>
-                    <div class='book-curr-chpt'>当前阅读：第一章</div>
-                    <div class='book-last-chpt'>最新章节：第八章</div>
+                    <div class='book-author'>作者：{{book.author}}</div>
+                    <div class='book-curr-chpt'>当前阅读：{{book.cur_chapter_title}}</div>
+                    <div class='book-last-chpt'>最新章节：{{book.last_chapter_title}}</div>
                   </div>
                     <!-- Your content here -->
                 </div>
             </div>
+          </a>
           </div>
-        </a>
+        
       {% endfor %}
 
 

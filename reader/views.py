@@ -13,7 +13,14 @@ class BookListView(generic.ListView):
     def get_queryset(self):
         """Return the last five published questions."""
         if self.request.user.is_authenticated:
-            return Book.objects.filter(share = True) or Book.objects.filter(uploader = self.request.user.id)
+            books = Book.objects.filter(share = True) | Book.objects.filter(uploader = self.request.user.id)
+            for bk in books:
+                last = UserBookRecord.objects.filter(user_id = self.request.user.id , book_id = bk.id).order_by('-read_time')
+                if len(last) > 0:
+                    bk.cur_chapter_title = last[0].chapter_title
+                else:
+                    bk.cur_chapter_title = '未开始'
+            return books
         else:
             print(Book.objects.filter(share = True))
             return Book.objects.filter(share = True)
@@ -102,6 +109,7 @@ def book(request,pk):
     if request.user.is_authenticated:
         last = UserBookRecord.objects.filter(user_id = request.user.id , book_id = pk).order_by('-read_time')
         if len(last) > 0:
+            print(last)
             last = last[0]
             return redirect('reader:book_reader',pk,last.chapter_id)
     _book =  get_object_or_404(Book,id = pk)
@@ -159,7 +167,9 @@ def book_reader(request,book_pk,chapter_pk):
             if len(records) == 0:
                 UserBookRecord(user_id =request.user.id, book_id =book_pk, chapter_id = chapter_pk, words_read = int(request.POST['words'])).save()
             else:
+
                 records[0].chapter_id = chapter_pk
+                records[0].chapter_title = Chapter.objects.filter(id = chapter_pk)[0].title
                 records[0].words_read = int(request.POST['words'])
                 records[0].save()
 

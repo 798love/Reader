@@ -25,12 +25,16 @@ def handle_local_book(request,url):
     with open(url,'r',encoding=charset) as f:
         data = f.read()
         pat = u'第[一二三四五六七八九十零百千0123456789]+[集章节卷]'
-        # pat = u'(?<=[　\s])(?:序章|序言|卷首语|扉页|楔子|正文(?!完|结)|终章|后记|尾声|番外|第?\s{0,4}[\d〇零一二两三四五六七八九十百千万壹贰叁肆伍陆柒捌玖拾佰仟]+?\s{0,4}(?:章|节(?!课)|卷|集(?![合和])|部(?![分赛游])|篇(?!张))).{0,30}$'
+        pat = u"(?<=[　\s])(?:序章|序言|卷首语|扉页|楔子|正文(?!完|结)|终章|后记|尾声|番外|第?\s{0,4}[\d〇零一二两三四五六七八九十百千万壹贰叁肆伍陆柒捌玖拾佰仟]+?\s{0,4}(?:章|节(?!课)|卷|集(?![合和])|部(?![分赛游])|篇(?!张))).{0,30}"
         book.rule = pat
         
         pattern = re.compile(pat)
         match = pattern.finditer(data)
 
+        # match = pattern.finditer(data[:10000])
+        # for chpt in match:
+        #     print(str(chpt.group()))
+        # return 'test'
         wc = len(data)
         book.word_count = wc
         book.save()

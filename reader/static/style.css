@@ -23,10 +23,7 @@
 }
 
 @media  screen and  (max-width: 991px) {
-	/* body{
-		padding-top: env(safe-area-inset-top); /* Ensure content is not under the status bar */
-	} */
-	
+
 	.reader-page{
 		height: 100vh;
 	}
@@ -251,28 +248,48 @@ article{
 	position: absolute;
 	background: #cccccc;
 	padding: 4px;
+	/* display: flex; */
+	align-content: end;
 }
 
 .book-author {
-	top: 0%;
-	height: 33%;
+	/* top: 0%;
+	height: 33%; */
 	width: 100%;
-	position: absolute;
+
+	font-size: small;
+	overflow:hidden;
+	text-overflow: ellipsis;
+	-webkit-line-clamp: 1;
+	display: -webkit-box;
 }
 
 .book-curr-chpt {
-	top: 33%;
-	height: 33%;
+	/* top: 33%;
+	height: 33%; */
 	width: 100%;
-	position: absolute;
+	/* position: absolute; */
+
+	font-size: small;
+
+	overflow:hidden;
+	text-overflow: ellipsis;
+	-webkit-line-clamp: 1;
+	display: -webkit-box;
 
 }
 
 .book-last-chpt {
-	top: 66%;
-	height: 33%;
+	/* top: 66%;
+	height: 33%; */
 	width: 100%;
-	position: absolute;
+	/* position: absolute; */
+	font-size: small;
+
+	overflow:hidden;
+	text-overflow: ellipsis;
+	-webkit-line-clamp: 1;
+	display: -webkit-box;
 
 }
 
