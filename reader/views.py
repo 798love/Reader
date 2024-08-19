@@ -211,8 +211,6 @@ def book_del(request,pk):
     _book = get_object_or_404(Book,id = pk)
     if request.user.is_superuser or request.user.id == _book.uploader:
         chapter_list = Chapter.objects.filter(book_id = pk)
-        for i in chapter_list:
-            Content.objects.filter(id=i.content_id).delete()
         chapter_list.delete()
         UserBookRecord.objects.filter(book_id = pk).delete()
         Book.objects.filter(id = pk).delete()

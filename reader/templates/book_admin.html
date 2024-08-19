@@ -15,7 +15,7 @@
     <div class="row">
         <ul  class="list-group">
             {% for book in book_list %}
-            <li class="list-group-item float-right">{{ book.title }} 
+            <li class="list-group-item float-right"> {{ book.id }}  {{ book.name }} 
                 <a class="btn btn-danger float-end" href="{% url 'reader:book_del' book.id %}">删除</a>
                 
             </li>
