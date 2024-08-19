@@ -1,5 +1,5 @@
 var mobile   = '/Mobile|iP(hone|od|ad)|Android|BlackBerry|IEMobile|Kindle|NetFront|Silk-Accelerated|(hpw|web)OS|Fennec|Minimo|Opera M(obi|ini)|Blazer|Dolfin|Dolphin|Skyfire|Zune/g'
-var isMobile     = navigator.userAgent.match('iP(hone|od|ad)')
+var isMobile     = navigator.userAgent.match('iPhone')
 var isIOS = navigator.userAgent.match(mobile)
 var offcanvasTop = new bootstrap.Offcanvas($('.offcanvas-top'))
 var offcanvasLeft = new bootstrap.Offcanvas($('.offcanvas-start'))

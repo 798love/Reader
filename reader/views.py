@@ -118,6 +118,9 @@ def book(request,pk):
     return redirect('reader:index')
 
 
+def reader(request):
+    return render(request, 'reader.html')
+
 @login_required(login_url='reader:index')
 def book_reader_offset(request,book_pk,chapter_pk,offset=0):
     _book = get_object_or_404(Book,id = int(book_pk))

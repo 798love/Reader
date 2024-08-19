@@ -39,7 +39,7 @@ article{
 
     <div class="container reader-page">
         <div class="top-bar">
-            <h3 class="chpt-title">{{chapter_title}} </h3> 
+            <h3 class="chpt-title"> </h3> 
 
             <h3 class="chpt-page mobile-only">
                 1/1
@@ -49,9 +49,7 @@ article{
             
             
             <article class="py-2">
-                    {% for line in content_lines %}
-                        <p >{{line}}</p>
-                    {% endfor %}
+                   
                 <span id="marker"></span>
             </article>
         </div>
@@ -284,20 +282,7 @@ article{
 {% load static %}
 
 <script>
-var csrf_token = '{{ csrf_token }}'
-var url_book_reader = "{% url 'reader:book_reader' request.resolver_match.kwargs.book_pk request.resolver_match.kwargs.chapter_pk %}"
-var last_words = parseInt({{last_words}})
-var user_setting_bg = "{{user_setting.read_bg}}"
-var url_update_setting = "{% url 'reader:update_setting' %}"
-var url_bookmark_save = "{% url 'reader:bookmark_save' %}"
-var book_id = '{{request.resolver_match.kwargs.book_pk}}'
-var chapter_id='{{request.resolver_match.kwargs.chapter_pk}}'
-var url_chapter_list = "{% url 'reader:chapter_list' request.resolver_match.kwargs.book_pk%}"
 
-var url_bookmark_list = "{% url 'reader:null'  %}"
-{% if request.user.id %}
-var url_bookmark_list = "{% url 'reader:bookmark_list' request.user.id  request.resolver_match.kwargs.book_pk %}"
-{% endif %}
 </script>
 
 <script src="{% static 'reader.js' %}"></script>
